@@ -19,3 +19,22 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* Reset dasar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  overflow: hidden; /* Pastikan konten tidak melebihi batas */
+}
+
+.panel {
+  flex: 0 0 auto; /* Jangan biarkan flex item menyusut */
+}
+
+

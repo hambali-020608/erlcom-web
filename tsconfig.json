@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/section/hero/banner.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/section/hero/banner.tsx", "src/components/gallery/cardphoto/card.jsx", "src/components/section/benefits/index.jsx"],
   "exclude": ["node_modules"]
 }

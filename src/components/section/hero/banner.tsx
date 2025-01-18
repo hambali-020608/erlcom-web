@@ -33,12 +33,13 @@ export default function Banner() {
       slidesPerView={1}
       className="w-full h-[600px]"
       effect="creative"
-      navigation
+     
       pagination={{ clickable: true }}
       onSwiper={(swiper) => console.log(swiper)}
       onSlideChange={() => console.log("slide change")}
     >
-      <SwiperSlide>
+          
+      <SwiperSlide className="">
         <Image alt="erl com banner1" src="/images/banner/banner2.jpg" className="w-full object-fill" width={500}  height={700}/>
       </SwiperSlide>
       <SwiperSlide>

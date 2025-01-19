@@ -1,6 +1,5 @@
 import Image from "next/image"
 import Menu from "./menu"
-import Banner from "./banner"
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 export default function Hero(){

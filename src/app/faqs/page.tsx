@@ -1,4 +1,4 @@
-import Header from "@/components/header";
+
 import Navbar from "@/components/section/navbar";
 
 export default function Faqs(){

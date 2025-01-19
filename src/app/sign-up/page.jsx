@@ -1,13 +1,45 @@
+'use client'
+
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+
+
 export default function Register() {
+  const router = useRouter()
+  const [formData,setFormData]=useState({
+      name:'',
+      email:'',
+      password:'',
+  
+  })
+  
+  const handleChange =(e)=>{
+      setFormData({
+          ...formData,
+          [e.target.name]:e.target.value
+      })
+  
+  }
+  
+  const handleSubmit = async (e)=>{
+
+      e.preventDefault()
+      const response = await fetch('/api/sign-up',{
+          method:'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(formData)
+      })
+      const data = await response.json()
+      if(data.status == 200){
+          router.push('/login')
+  
+      }
+  
+  }
+  
     return(
         <>
-        {/*
-  Heads up! 👋
-
-  Plugins:
-    - @tailwindcss/forms
-*/}
-
+   
 <section className="bg-white">
   <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
     <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
@@ -57,29 +89,16 @@ export default function Register() {
           </p>
         </div>
 
-        <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+        <form onSubmit={handleSubmit} method="POST" className="mt-8 grid grid-cols-6 gap-6">
           <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="FirstName" className="block text-sm font-medium text-gray-700">
-              First Name
+            <label  htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
             </label>
-
             <input
               type="text"
-              id="FirstName"
-              name="first_name"
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
-          </div>
-
-          <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="LastName" className="block text-sm font-medium text-gray-700">
-              Last Name
-            </label>
-
-            <input
-              type="text"
-              id="LastName"
-              name="last_name"
+              onChange={handleChange}
+              id="name"
+              name="name"
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             />
           </div>
@@ -91,6 +110,7 @@ export default function Register() {
               type="email"
               id="Email"
               name="email"
+              onChange={handleChange}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             />
           </div>
@@ -99,6 +119,7 @@ export default function Register() {
             <label htmlFor="Password" className="block text-sm font-medium text-gray-700"> Password </label>
 
             <input
+            onChange={handleChange}
               type="password"
               id="Password"
               name="password"
@@ -106,28 +127,9 @@ export default function Register() {
             />
           </div>
 
-          <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="PasswordConfirmation" className="block text-sm font-medium text-gray-700">
-              Password Confirmation
-            </label>
-
-            <input
-              type="password"
-              id="PasswordConfirmation"
-              name="password_confirmation"
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
-          </div>
-
           <div className="col-span-6">
             <label htmlFor="MarketingAccept" className="flex gap-4">
-              <input
-                type="checkbox"
-                id="MarketingAccept"
-                name="marketing_accept"
-                className="size-5 rounded-md border-gray-200 bg-white shadow-sm"
-              />
-
+        
               <span className="text-sm text-gray-700">
                 I want to receive emails about events, product updates and company announcements.
               </span>

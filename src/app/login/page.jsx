@@ -1,4 +1,42 @@
+'use client'
+
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+
+
 export default function Login(){
+  const router = useRouter()
+  const [formData,setFormData]=useState({
+      email:'',
+      password:''
+  })
+  
+  
+  function handleChange(e){
+      setFormData({
+          ...formData,
+          [e.target.name]:e.target.value
+      })
+  }
+  
+  async function handleSubmit(e) {
+      e.preventDefault()
+      const response = await fetch('/api/auth',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(formData)
+          
+      })
+  
+      const data = await response.json()
+      if(data.status === 200){
+        console.log(data)
+        router.push('/')
+      }
+  
+  
+  }
+    
     return(
         <>
 <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -10,7 +48,7 @@ export default function Login(){
       inventore quaerat mollitia?
     </p>
 
-    <form action="#" className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
+    <form onSubmit={handleSubmit} className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
       <p className="text-center text-lg font-medium">Masuk ke akun anda</p>
 
       <div> 
@@ -18,6 +56,8 @@ export default function Login(){
 
         <div className="relative">
           <input
+          name="email"
+            onChange={handleChange}
             type="email"
             className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
             placeholder="Enter email"
@@ -47,6 +87,8 @@ export default function Login(){
 
         <div className="relative">
           <input
+          onChange={handleChange}
+          name="password"
             type="password"
             className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
             placeholder="Enter password"

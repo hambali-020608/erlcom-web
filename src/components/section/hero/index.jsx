@@ -8,7 +8,7 @@ export default function Hero(){
         <section className="hero bg-blue-600 min-h-[90vh]" >
             
         
-            <div className="hero-content  flex-col lg:flex-row-reverse gap-50">
+            <div className="hero-content  flex-col lg:flex-row-reverse ">
     <img
       src="/images/banner/computer.png"
       className="max-w-sm z-40"

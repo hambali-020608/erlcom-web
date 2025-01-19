@@ -1,6 +1,6 @@
 export default function Footer(){
     return (
-        <footer className="footer bg-base-200 text-base-content p-10">
+        <footer className="footer bg-base-200 text-base-content p-10" data-aos="fade-up">
   <aside>
     <img src="/images/logo/Erl.png" alt="" width={60} className="-ms-2"/>
     <p>

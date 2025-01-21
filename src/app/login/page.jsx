@@ -56,7 +56,7 @@ export default function Login(){
 
         <div className="relative">
           <input
-          name="email"
+            name="email"
             onChange={handleChange}
             type="email"
             className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"

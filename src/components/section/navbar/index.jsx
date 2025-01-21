@@ -2,10 +2,12 @@
 import Image from "next/image";
 import NavLink from "./navlink";
 import { usePathname } from "next/navigation";
-export default function Navbar() {
+export default function Navbar({user}) {
+
   const pathName = usePathname();
   return (
     <div className="navbar bg-blue-600 " >
+      {console.log(user)}
   <div className="navbar-start">
     <div className="dropdown">
       <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -74,7 +76,20 @@ export default function Navbar() {
 
 {/* Pill */}
 
-<a
+
+{user ? (
+ <a
+  className="group inline-block rounded-full bg-black p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
+  href="/dashboard"
+>
+  <span
+    className="block rounded-full bg-black text-white px-8 py-3 text-sm font-medium group-hover:bg-transparent"
+  >
+    Dashboard
+  </span>
+</a>
+):(
+  <a
   className="group inline-block rounded-full bg-black p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
   href="/login"
 >
@@ -84,6 +99,8 @@ export default function Navbar() {
     Login
   </span>
 </a>
+)}
+
   </div>
 </div>
   );

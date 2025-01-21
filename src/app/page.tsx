@@ -7,12 +7,14 @@ import Benefits from "@/components/section/benefits";
 import Footer from '@/components/footer'
 import Profit from '@/components/section/profit/index'
 import Programs from '@/components/section/programs/index'
+import AuthUser from '@/lib/authUser'
 
-export default function Home() {
+export default async function Home() {
+  const user =await AuthUser()
   return (
     <div>
                 {/* <Header/> */}
-                <Navbar/>
+                <Navbar user={user}/>
                     <main>
                         <Hero/>
                         <Benefits/>

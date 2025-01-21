@@ -1,5 +1,4 @@
 'use server'
-
 import { cookies } from "next/headers"
 import jwt from 'jsonwebtoken'
 const JWT_SECRET = 'erlcom'
@@ -12,14 +11,10 @@ export default async function AuthUser() {
             data=null
             return data
         }
-    
         try{
             const user = jwt.verify(token,JWT_SECRET)
             data = user
-            return data
-            
+            return data   
         }catch (error){
-            
-    
         }
 }

@@ -1,10 +1,25 @@
-import { useState } from "react";
+import { useState,createContext,useContext, useEffect } from "react";
 import Link from "next/link";
+
 import Image from "next/image";
 import ClickOutside from "@/components/dashboard/ClickOutside";
+import { create } from "domain";
+import AuthUser from "@/lib/authUser";
 
 const DropdownUser = () => {
+
+  const [name, setName] = useState<{ name: string } | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  useEffect(()=>{
+    const fetchUser=async()=>{
+      const user = await AuthUser()
+      setName(user)
+    
+      
+  
+    }
+    fetchUser()
+  },[])  
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -15,7 +30,8 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {name?.name} 
+            
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>

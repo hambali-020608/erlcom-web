@@ -8,15 +8,14 @@ import prisma from "../../lib/prisma"
 
 
 export default async function Dashboard(){
-    const user = await AuthUser()
+
 
     return(
         
 <>
-<DefaultLayout>
 
-    <Ecommerce/>
-</DefaultLayout>
+<Ecommerce/>
+
 
 </>
     )

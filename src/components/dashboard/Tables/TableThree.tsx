@@ -3,27 +3,24 @@ import { Package } from "@/types/package";
 const packageData: Package[] = [
   {
     name: "Free package",
-    price: 0.0,
+
     invoiceDate: `Jan 13,2023`,
-    status: "Paid",
+    status: "Finish",
   },
   {
     name: "Standard Package",
-    price: 59.0,
     invoiceDate: `Jan 13,2023`,
-    status: "Paid",
+    status: "Unfinished",
   },
   {
     name: "Business Package",
-    price: 99.0,
     invoiceDate: `Jan 13,2023`,
-    status: "Unpaid",
+    status: "Finish",
   },
   {
     name: "Standard Package",
-    price: 59.0,
     invoiceDate: `Jan 13,2023`,
-    status: "Pending",
+    status: "Finish",
   },
 ];
 
@@ -35,17 +32,17 @@ const TableThree = () => {
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
-                Package
+                Judul Materi
               </th>
               <th className="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
-                Invoice date
+                Tanggal
               </th>
               <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
                 Status
               </th>
-              <th className="px-4 py-4 font-medium text-black dark:text-white">
+              {/* <th className="px-4 py-4 font-medium text-black dark:text-white">
                 Actions
-              </th>
+              </th> */}
             </tr>
           </thead>
           <tbody>
@@ -55,8 +52,7 @@ const TableThree = () => {
                   <h5 className="font-medium text-black dark:text-white">
                     {packageItem.name}
                   </h5>
-                  <p className="text-sm">${packageItem.price}</p>
-                </td>
+                    </td>
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <p className="text-black dark:text-white">
                     {packageItem.invoiceDate}
@@ -65,9 +61,9 @@ const TableThree = () => {
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                      packageItem.status === "Paid"
+                      packageItem.status === "Finish"
                         ? "bg-success text-success"
-                        : packageItem.status === "Unpaid"
+                        : packageItem.status === "Unfinished"
                           ? "bg-danger text-danger"
                           : "bg-warning text-warning"
                     }`}
@@ -75,7 +71,7 @@ const TableThree = () => {
                     {packageItem.status}
                   </p>
                 </td>
-                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                {/* <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <button className="hover:text-primary">
                       <svg
@@ -143,7 +139,7 @@ const TableThree = () => {
                       </svg>
                     </button>
                   </div>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

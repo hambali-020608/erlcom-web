@@ -124,11 +124,8 @@ const menuGroups = [
           </svg>
         ),
         label: "Materi",
-        route: "#",
-        children: [
-          { label: "Form Elements", route: "/forms/form-elements" },
-          { label: "Form Layout", route: "/forms/form-layout" },
-        ],
+        route: "/dashboard/materi",
+        
       },
       {
         icon: (

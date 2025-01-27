@@ -10,6 +10,8 @@ export default function Login(){
       email:'',
       password:''
   })
+
+  const [message,setMessage]= useState('')
   
   
   function handleChange(e){
@@ -30,8 +32,13 @@ export default function Login(){
   
       const data = await response.json()
       if(data.status === 200){
-        console.log(data)
-        router.push('/')
+        
+        setMessage(data.message)
+        router.push('/dashboard')
+        return  <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        <span class="font-medium">{data.message}</span>
+      </div>
+        
       }
   
   
@@ -43,11 +50,11 @@ export default function Login(){
   <div className="mx-auto max-w-lg">
     <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Login</h1>
 
-    <p className="mx-auto mt-4 max-w-md text-center text-gray-500">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt dolores deleniti
-      inventore quaerat mollitia?
-    </p>
-
+      <p className="mx-auto mt-4 max-w-md text-center text-gray-500">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt dolores deleniti
+        inventore quaerat mollitia?
+      </p>
+     
     <form onSubmit={handleSubmit} className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
       <p className="text-center text-lg font-medium">Masuk ke akun anda</p>
 

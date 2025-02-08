@@ -1,169 +1,123 @@
 'use client'
 
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Register() {
-  const router = useRouter()
-  const [formData,setFormData]=useState({
-      name:'',
-      email:'',
-      password:'',
-  
-  })
-  
-  const handleChange =(e)=>{
-      setFormData({
-          ...formData,
-          [e.target.name]:e.target.value
-      })
-  
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
-  
-  const handleSubmit = async (e)=>{
 
-      e.preventDefault()
-      const response = await fetch('/api/sign-up',{
-          method:'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(formData)
-      })
-      const data = await response.json()
-      if(data.status == 200){
-          router.push('/login')
-  
-      }
-  
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setMessage("");
+    setError("");
+    
+    const response = await fetch("/api/sign-up", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+    if (data.status === 200) {
+      setMessage("Pendaftaran berhasil! Mengarahkan ke halaman login...");
+      setTimeout(() => router.push("/login"), 2000);
+    } else {
+      setError("Terjadi kesalahan, silakan coba lagi.");
+    }
   }
-  
-    return(
-        <>
-   
-<section className="bg-white">
-  <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-    <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
-      <img
-        alt=""
-        src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-        className="absolute inset-0 h-full w-full object-cover opacity-80"
-      />
 
-      <div className="hidden lg:relative lg:block lg:p-12">
-        <a className="block text-white" href="#">
-          <span className="sr-only">Home</span>
-          <img src="/images/logo/Erl.png" className="w-24" alt="" />
-          </a>
-
-        <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-          Welcome to ErlCom
-        </h2>
-
-        <p className="mt-4 leading-relaxed text-white/90">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-          quibusdam aperiam voluptatum.
-        </p>
-      </div>
-    </section>
-
-    <main
-      className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 bg-gradient-to-r from-indigo-600 to-blue-500 min-h-screen flex items-center justify-center"
     >
-      <div className="max-w-xl lg:max-w-3xl">
-        <div className="relative -mt-16 block lg:hidden">
-          <a
-            className="inline-flex size-16 items-center justify-center rounded-full bg-white text-blue-600 sm:size-20"
-            href="#"
+      <div className="max-w-lg bg-white p-12 rounded-3xl shadow-2xl space-y-6 border border-gray-300">
+        <h1 className="text-center text-5xl font-extrabold text-blue-700">Buat Akun</h1>
+        <p className="text-center text-gray-500 text-lg">Gabung sekarang dan nikmati pengalaman terbaik!</p>
+
+        {error && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="p-4 mb-4 text-sm text-red-800 bg-red-100 rounded-lg"
           >
-     <img src="/images/logo/Erl.png" className="w-24" alt="" />
-            
-          </a>
+            {error}
+          </motion.div>
+        )}
 
-          <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-            Welcome To ErlCom
-          </h1>
+        {message && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg"
+          >
+            {message}
+          </motion.div>
+        )}
 
-          <p className="mt-4 leading-relaxed text-gray-500">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-            quibusdam aperiam voluptatum.
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} method="POST" className="mt-8 grid grid-cols-6 gap-6">
-          <div className="col-span-6 sm:col-span-3">
-            <label  htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="name" className="text-gray-600 font-medium">Nama Lengkap</label>
             <input
-              type="text"
-              onChange={handleChange}
-              id="name"
               name="name"
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              onChange={handleChange}
+              type="text"
+              className="w-full rounded-lg border border-gray-300 p-4 mt-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Masukkan nama lengkap Anda"
             />
           </div>
 
-          <div className="col-span-6">
-            <label htmlFor="Email" className="block text-sm font-medium text-gray-700"> Email </label>
-
+          <div>
+            <label htmlFor="email" className="text-gray-600 font-medium">Email</label>
             <input
-              type="email"
-              id="Email"
               name="email"
               onChange={handleChange}
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              type="email"
+              className="w-full rounded-lg border border-gray-300 p-4 mt-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Masukkan email Anda"
             />
           </div>
 
-          <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="Password" className="block text-sm font-medium text-gray-700"> Password </label>
-
+          <div>
+            <label htmlFor="password" className="text-gray-600 font-medium">Password</label>
             <input
-            onChange={handleChange}
-              type="password"
-              id="Password"
+              onChange={handleChange}
               name="password"
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              type="password"
+              className="w-full rounded-lg border border-gray-300 p-4 mt-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Masukkan password Anda"
             />
           </div>
 
-          <div className="col-span-6">
-            <label htmlFor="MarketingAccept" className="flex gap-4">
-        
-              <span className="text-sm text-gray-700">
-                I want to receive emails about events, product updates and company announcements.
-              </span>
-            </label>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-bold py-4 rounded-lg text-lg shadow-md"
+          >
+            Daftar Sekarang
+          </button>
 
-          <div className="col-span-6">
-            <p className="text-sm text-gray-500">
-              By creating an account, you agree to our
-              <a href="#" className="text-gray-700 underline"> terms and conditions </a>
-              and
-              <a href="#" className="text-gray-700 underline">privacy policy</a>.
-            </p>
-          </div>
-
-          <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-            <button
-              className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-            >
-              Create an account
-            </button>
-
-            <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-              Already have an account?
-              <a href="#" className="text-gray-700 underline">Log in</a>.
-            </p>
-          </div>
+          <p className="text-center text-gray-500 text-sm">
+            Sudah punya akun? <a className="text-blue-600 font-semibold" href="/login">Masuk di sini</a>
+          </p>
         </form>
       </div>
-    </main>
-  </div>
-</section>
-        
-        </>
-    )
-    
+    </motion.div>
+  );
 }

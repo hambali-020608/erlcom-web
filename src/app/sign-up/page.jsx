@@ -50,7 +50,7 @@ export default function Register() {
     >
       <div className="max-w-lg bg-white p-12 rounded-3xl shadow-2xl space-y-6 border border-gray-300">
         <h1 className="text-center text-5xl font-extrabold text-blue-700">Buat Akun</h1>
-        <p className="text-center text-gray-500 text-lg">Gabung sekarang dan nikmati pengalaman terbaik!</p>
+        <p className="text-center text-gray-500 text-lg">Gabung sekarang dan nikmati pen  galaman terbaik!</p>
 
         {error && (
           <motion.div 

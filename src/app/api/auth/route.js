@@ -7,11 +7,14 @@ const JWT_SECRET = 'erlcom'
 
 export async function POST(req) {
 const data = await req.json()
-const user = await prisma.Users.findUnique({
-    where:{
-        email:data.email
+const user = await prisma.users.findUnique(
+    {
+        where: {
+            email:data.email
+        }
     }
-})
+)
+
 
 if(!user){
     return NextResponse.json({message:'user not found'})
@@ -38,6 +41,7 @@ cookieStore.set({
     maxAge: 60 * 60
     
 })
+
 
 
 

@@ -1,7 +1,9 @@
 'use client'
 import { motion } from "framer-motion";
 
-export default function Programs() {
+
+export default function Programs({programs}) {
+  
   return (
     <motion.section 
       className="mt-20 px-6"
@@ -17,18 +19,7 @@ export default function Programs() {
         Program Kami
       </h1>
       <div className="flex flex-wrap justify-center gap-8 mt-10">
-        {[ 
-          {
-            title: "Microsoft Office",
-            image: "https://applexgen.com/wp-content/uploads/2020/04/Ahora-puede-descargar-el-paquete-de-Microsoft-Office-para-su.jpg",
-            description: "Pelajari Microsoft Office secara mendalam untuk meningkatkan produktivitas kerja.",
-          },
-          {
-            title: "Desain Grafis",
-            image: "https://tse4.mm.bing.net/th?id=OIP.1VruEeZhi6CIQ-aCsuFDegHaEz&pid=Api&P=0&h=180",
-            description: "Kuasi desain grafis dengan tools profesional seperti Photoshop dan Illustrator.",
-          }
-        ].map((program, index) => (
+        {programs.map((program, index) => (
           <motion.div 
             key={index}
             className="relative w-96 rounded-lg overflow-hidden shadow-xl cursor-pointer"
@@ -51,6 +42,9 @@ export default function Programs() {
               <button className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-md transition">
                 Detail Kelas
               </button>
+              <a href={`/payment/${program.id}`} className="mt-4 ms-5 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-md transition">
+                Daftar Kelas
+              </a>
             </div>
           </motion.div>
         ))}

@@ -7,57 +7,112 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model jadwal {
-  id          Int       @id @default(autoincrement())
-  materi_id   Int?
-  user_id     Int?
-  day         String?   @db.VarChar(255)
-  start_time  DateTime? @db.Time(0)
-  finish_time DateTime? @db.Time(0)
-  materi      materi?   @relation(fields: [materi_id], references: [id])
-  user        users?    @relation(fields: [user_id], references: [id])
-
-  @@index([materi_id], map: "jadwal_materi_id_fkey")
-  @@index([user_id], map: "jadwal_user_id_fkey")
-}
-
-model materi {
-  id            Int       @id @default(autoincrement())
-  materi_name   String?   @db.VarChar(255)
-  materi_detail String?   @db.Text
-  created_at    DateTime? @db.Timestamp(0)
-  jadwal        jadwal[]
-}
-
-model reviews {
-  id         Int       @id @default(autoincrement())
-  user_id    Int?
-  content    String?   @db.Text
-  created_at DateTime? @db.Timestamp(0)
-  user       users?    @relation(fields: [user_id], references: [id])
-
-  @@index([user_id], map: "reviews_user_id_fkey")
-}
-
-model transaksi {
-  id                 Int     @id @default(autoincrement())
-  transaction_id     String? @db.VarChar(255)
-  user_id            Int?
-  transaction_amount Int?
-  amount             Int?
-  user               users?  @relation(fields: [user_id], references: [id])
-
-  @@index([user_id], map: "transaksi_user_id_fkey")
-}
-
 model users {
-  id         Int         @id @default(autoincrement())
-  username   String?     @db.VarChar(255)
-  email      String?     @db.VarChar(255)
-  password   String?     @db.VarChar(255)
-  role       String?     @db.VarChar(255)
-  created_at DateTime?   @db.Timestamp(0)
-  jadwal     jadwal[]
-  reviews    reviews[]
-  transaksi  transaksi[]
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(100)
+  email       String        @unique(map: "email") @db.VarChar(100)
+  password    String        @db.VarChar(255)
+  role        users_role    @default(student)
+  created_at  DateTime?     @default(now()) @db.Timestamp(0)
+  enrollments enrollments[]
+  payments    payments[]
+  submissions submissions[]
+}
+
+model assignments {
+  id          Int           @id @default(autoincrement())
+  course_id   Int
+  title       String        @db.VarChar(255)
+  description String?       @db.Text
+  due_date    DateTime?     @db.DateTime(0)
+  created_at  DateTime?     @default(now()) @db.Timestamp(0)
+  courses     courses       @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "assignments_ibfk_1")
+  submissions submissions[]
+
+  @@index([course_id], map: "course_id")
+}
+
+model courses {
+  id          Int           @id @default(autoincrement())
+  title       String        @db.VarChar(255)
+  description String?       @db.Text
+  image       String        @db.Text
+  created_at  DateTime?     @default(now()) @db.Timestamp(0)
+  price       Int?          @default(0)
+  assignments assignments[]
+  enrollments enrollments[]
+  payments    payments[]
+}
+
+model enrollments {
+  id          Int                 @id @default(autoincrement())
+  user_id     Int
+  course_id   Int
+  progress    Int?                @default(0)
+  status      enrollments_status? @default(in_progress)
+  enrolled_at DateTime?           @default(now()) @db.Timestamp(0)
+  users       users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "enrollments_ibfk_1")
+  courses     courses             @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "enrollments_ibfk_2")
+
+  @@index([course_id], map: "course_id")
+  @@index([user_id], map: "user_id")
+}
+
+model submissions {
+  id            Int                 @id @default(autoincrement())
+  assignment_id Int
+  user_id       Int
+  status        submissions_status? @default(unfinish)
+  submitted_at  DateTime?           @db.Timestamp(0)
+  grade         Int?
+  feedback      String?             @db.Text
+  assignments   assignments         @relation(fields: [assignment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "submissions_ibfk_1")
+  users         users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "submissions_ibfk_2")
+
+  @@index([assignment_id], map: "assignment_id")
+  @@index([user_id], map: "user_id")
+}
+
+model payments {
+  id             Int                      @id @default(autoincrement())
+  user_id        Int
+  course_id      Int
+  amount         Decimal                  @db.Decimal(10, 2)
+  payment_method payments_payment_method
+  payment_status payments_payment_status? @default(pending)
+  transaction_id String?                  @unique(map: "transaction_id") @db.VarChar(255)
+  created_at     DateTime?                @default(now()) @db.Timestamp(0)
+  users          users                    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payments_ibfk_1")
+  courses        courses                  @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "payments_ibfk_2")
+
+  @@index([course_id], map: "course_id")
+  @@index([user_id], map: "user_id")
+}
+
+enum submissions_status {
+  finish
+  unfinish
+  graded
+}
+
+enum enrollments_status {
+  in_progress
+  completed
+}
+
+enum users_role {
+  student
+  instructor
+}
+
+enum payments_payment_method {
+  bank_transfer
+  credit_card
+  ewallet
+}
+
+enum payments_payment_status {
+  pending
+  success
+  failed
 }

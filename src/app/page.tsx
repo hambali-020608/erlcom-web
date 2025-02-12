@@ -8,9 +8,12 @@ import Footer from '@/components/footer'
 import Profit from '@/components/section/profit/index'
 import Programs from '@/components/section/programs/index'
 import AuthUser from '@/lib/authUser'
+import {getPrograms} from '@/lib/getPrograms'
 
 export default async function Home() {
   const user =await AuthUser()
+  const programs =await getPrograms()
+
   return (
     <div>
                 {/* <Header/> */}
@@ -18,7 +21,8 @@ export default async function Home() {
                     <main>
                         <Hero/>
                         <Benefits/>
-                        <Programs/>
+                {console.log(programs)}
+                        <Programs programs={programs} />
                         <Blog/>
                         <Profit/>
                         <Information/>

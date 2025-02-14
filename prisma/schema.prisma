@@ -14,6 +14,7 @@ model users {
   password    String        @db.VarChar(255)
   role        users_role    @default(student)
   created_at  DateTime?     @default(now()) @db.Timestamp(0)
+  attendance  attendance[]
   enrollments enrollments[]
   payments    payments[]
   submissions submissions[]
@@ -40,6 +41,7 @@ model courses {
   created_at  DateTime?     @default(now()) @db.Timestamp(0)
   price       Int?          @default(0)
   assignments assignments[]
+  attendance  attendance[]
   enrollments enrollments[]
   payments    payments[]
 }
@@ -89,6 +91,19 @@ model payments {
   @@index([user_id], map: "user_id")
 }
 
+model attendance {
+  id         Int               @id @default(autoincrement())
+  student_id Int?
+  course_id  Int?
+  date       DateTime          @db.Date
+  status     attendance_status
+  users      users?            @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "attendance_ibfk_1")
+  courses    courses?          @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "attendance_ibfk_2")
+
+  @@index([course_id], map: "course_id")
+  @@index([student_id], map: "student_id")
+}
+
 enum submissions_status {
   finish
   unfinish
@@ -115,4 +130,9 @@ enum payments_payment_status {
   pending
   success
   failed
+}
+
+enum attendance_status {
+  Hadir
+  Absen
 }

@@ -65,6 +65,7 @@ model submissions {
   assignment_id Int
   user_id       Int
   status        submissions_status? @default(unfinish)
+  created_at    DateTime?         @db.Date // Hanya menyimpan tanggal
   submitted_at  DateTime?           @db.Timestamp(0)
   grade         Int?
   feedback      String?             @db.Text

@@ -65,8 +65,8 @@ const menuGroups = [
             />
           </svg>
         ),
-        label: "Jadwal",
-        route: "/dashboard/jadwal",
+        label: "Kelas",
+        route: "/dashboard/class",
       },
       {
         icon: (
@@ -155,8 +155,8 @@ const menuGroups = [
             </defs>
           </svg>
         ),
-        label: "Tugas",
-        route: "",
+        label: "Absensi",
+        route: "/dashboard/attedance",
       },
       {
         icon: (

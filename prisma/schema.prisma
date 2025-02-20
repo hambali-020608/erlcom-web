@@ -7,19 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  id          Int           @id @default(autoincrement())
-  name        String        @db.VarChar(100)
-  email       String        @unique(map: "email") @db.VarChar(100)
-  password    String        @db.VarChar(255)
-  role        users_role    @default(student)
-  created_at  DateTime?     @default(now()) @db.Timestamp(0)
-  attendance  attendance[]
-  enrollments enrollments[]
-  payments    payments[]
-  submissions submissions[]
-}
-
 model assignments {
   id          Int           @id @default(autoincrement())
   course_id   Int
@@ -31,6 +18,32 @@ model assignments {
   submissions submissions[]
 
   @@index([course_id], map: "course_id")
+}
+
+model attendance {
+  id         Int               @id @default(autoincrement())
+  student_id Int?
+  course_id  Int?
+  date       DateTime          @db.Date
+  status     attendance_status
+  users      users?            @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "attendance_ibfk_1")
+  courses    courses?          @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "attendance_ibfk_2")
+
+  @@index([course_id], map: "course_id")
+  @@index([student_id], map: "student_id")
+}
+
+model chats {
+  id                             Int       @id @default(autoincrement())
+  sender_id                      Int
+  receiver_id                    Int
+  message                        String    @db.Text
+  created_at                     DateTime? @default(now()) @db.Timestamp(0)
+  users_chats_sender_idTousers   users     @relation("chats_sender_idTousers", fields: [sender_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "chats_ibfk_1")
+  users_chats_receiver_idTousers users     @relation("chats_receiver_idTousers", fields: [receiver_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "chats_ibfk_2")
+  
+  @@index([receiver_id], map: "receiver_id")
+  @@index([sender_id], map: "sender_id")
 }
 
 model courses {
@@ -60,22 +73,6 @@ model enrollments {
   @@index([user_id], map: "user_id")
 }
 
-model submissions {
-  id            Int                 @id @default(autoincrement())
-  assignment_id Int
-  user_id       Int
-  status        submissions_status? @default(unfinish)
-  created_at    DateTime?         @db.Date // Hanya menyimpan tanggal
-  submitted_at  DateTime?           @db.Timestamp(0)
-  grade         Int?
-  feedback      String?             @db.Text
-  assignments   assignments         @relation(fields: [assignment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "submissions_ibfk_1")
-  users         users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "submissions_ibfk_2")
-
-  @@index([assignment_id], map: "assignment_id")
-  @@index([user_id], map: "user_id")
-}
-
 model payments {
   id             Int                      @id @default(autoincrement())
   user_id        Int
@@ -92,17 +89,36 @@ model payments {
   @@index([user_id], map: "user_id")
 }
 
-model attendance {
-  id         Int               @id @default(autoincrement())
-  student_id Int?
-  course_id  Int?
-  date       DateTime          @db.Date
-  status     attendance_status
-  users      users?            @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "attendance_ibfk_1")
-  courses    courses?          @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "attendance_ibfk_2")
+model submissions {
+  id            Int                 @id @default(autoincrement())
+  assignment_id Int
+  user_id       Int
+  status        submissions_status? @default(unfinish)
+  submitted_at  DateTime?           @db.Timestamp(0)
+  grade         Int?
+  feedback      String?             @db.Text
+  created_at    DateTime?           @db.Date
+  assignments   assignments         @relation(fields: [assignment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "submissions_ibfk_1")
+  users         users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "submissions_ibfk_2")
 
-  @@index([course_id], map: "course_id")
-  @@index([student_id], map: "student_id")
+  @@index([assignment_id], map: "assignment_id")
+  @@index([user_id], map: "user_id")
+}
+
+model users {
+  id                             Int           @id @default(autoincrement())
+  name                           String        @db.VarChar(100)
+  email                          String        @unique(map: "email") @db.VarChar(100)
+  password                       String        @db.VarChar(255)
+  role                           users_role    @default(student)
+  created_at                     DateTime?     @default(now()) @db.Timestamp(0)
+  attendance                     attendance[]
+  chats_chats_sender_idTousers   chats[]       @relation("chats_sender_idTousers")
+  chats_chats_receiver_idTousers chats[]       @relation("chats_receiver_idTousers")
+  enrollments                    enrollments[]
+  payments                       payments[]
+  
+  submissions                    submissions[]
 }
 
 enum submissions_status {
@@ -121,6 +137,11 @@ enum users_role {
   instructor
 }
 
+enum attendance_status {
+  Hadir
+  Absen
+}
+
 enum payments_payment_method {
   bank_transfer
   credit_card
@@ -131,9 +152,4 @@ enum payments_payment_status {
   pending
   success
   failed
-}
-
-enum attendance_status {
-  Hadir
-  Absen
 }

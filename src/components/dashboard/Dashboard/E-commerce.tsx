@@ -1,11 +1,14 @@
 "use client";
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChartOne from "../Charts/ChartOne";
 import ChartTwo from "../Charts/ChartTwo";
 import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
+import { getChatByUser } from '../../../lib/getChats'
+
+
 
 const MapOne = dynamic(() => import("@/components/dashboard/Maps/MapOne"), {
   ssr: false,
@@ -15,11 +18,27 @@ const ChartThree = dynamic(() => import("@/components/dashboard/Charts/ChartThre
   ssr: false,
 });
 
+
+
+
 const ECommerce: React.FC = () => {
+const [chat,setChat] =  useState([])
+useEffect(()=>{
+  async function fetchChat(){
+     const chatResponse = await fetch('/api/get-chat');
+     const chatData = await chatResponse.json()
+     setChat(chatData.chatHistory)
+ 
+  }
+ 
+  fetchChat()
+ },[])
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats title="Total Absen" total="50" rate="0.43%" levelUp>
+  
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -89,9 +108,9 @@ const ECommerce: React.FC = () => {
         <ChartThree />
         <MapOne />
         <div className="col-span-12 xl:col-span-8">
-         
+         {console.log(chat)}
         </div>
-        <ChatCard />
+        <ChatCard chats = {chat} />
       </div>
     </>
   );

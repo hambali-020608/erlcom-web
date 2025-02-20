@@ -81,20 +81,19 @@ const TableOne = ({attedances}:any) => {
             key={key}
           >
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
+
               <div className="flex-shrink-0">
               <p className="text-black dark:text-white">{attedance.date.toDateString()}</p>
               </div>
-              
             </div>
             <div className="flex items-center justify-center p-2.5 xl:p-5">
               <p className="text-black dark:text-white">{attedance.status}</p>
             </div>
           
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-black dark:text-white"> {attedance.courses.title} </p>
+              <p className="text-black dark:text-white">{ attedance.courses.title }</p>
             </div>
 
-           
           </div>
         ))}
       </div>

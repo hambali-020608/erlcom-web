@@ -23,10 +23,22 @@ const ChartThree = dynamic(() => import("@/components/dashboard/Charts/ChartThre
 
 const ECommerce: React.FC = () => {
 const [chat,setChat] =  useState([])
+const [countClass,setCountClass]=useState([])
+const [countAttedance,setCountAttedance]=useState([])
 useEffect(()=>{
   async function fetchChat(){
      const chatResponse = await fetch('/api/get-chat');
+     const getCountAttedance = await fetch('/api/count-attedance')
+     const countAttedanceData = await getCountAttedance.json()
+     
+     const getCountClass = await fetch('/api/count-class')
+     const countClassData = await getCountClass.json()
+
+
+
      const chatData = await chatResponse.json()
+     setCountClass(countClassData)
+     setCountAttedance(countAttedanceData)
      setChat(chatData.chatHistory)
  
   }
@@ -37,7 +49,8 @@ useEffect(()=>{
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Absen" total="50" rate="0.43%" levelUp>
+        <CardDataStats title="Total Absen" total={countAttedance.jumlahAbsen} rate="0.43%" levelUp>
+          {console.log(countClass)}
   
           <svg
             className="fill-primary dark:fill-white"
@@ -80,7 +93,7 @@ useEffect(()=>{
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Kelas" total="1" rate="2.59%" >
+        <CardDataStats title="Total Kelas" total={countClass.jumlahCourse} rate="2.59%" >
           <svg
             className="fill-primary dark:fill-white"
             width="22"

@@ -55,7 +55,7 @@ export default function PaymentPage() {
       if (!paymentData.success) throw new Error("Pembayaran gagal");
 
       // Enroll user ke kursus
-      const enrollRes = await fetch("/api/enrollments", {
+      const enrollRes = await fetch("/api/enrollments/create-enrollments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -64,7 +64,10 @@ export default function PaymentPage() {
         }),
       });
 
+
+
       const enrollData = await enrollRes.json();
+      console.log(enrollData)
       if (!enrollData.success) throw new Error("Gagal enroll kursus");
 
       // Redirect ke halaman sukses

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import AuthUser from "../../../../lib/authUser";
+import AuthUser from "../../../../../lib/authUser";
 
 export default function ChatPage() {
   const { id } = useParams(); // ID user yang sedang di-chat

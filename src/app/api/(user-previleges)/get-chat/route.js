@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import {getChatByUser} from '../../../lib/getChats'
-import AuthUser from "../../../lib/authUser";
+import AuthUser from "../../../../lib/authUser";
 const prisma = new PrismaClient();
 
 export async function GET() {

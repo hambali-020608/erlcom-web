@@ -1,6 +1,6 @@
-import TableTwo from "../../../components/dashboard/Tables/TableTwo"
-import AuthUser from "../../../lib/authUser"
-import {getClassByUser} from '../../../lib/getClass' 
+import TableTwo from "../../../../components/dashboard/Tables/TableTwo"
+import AuthUser from "../../../../lib/authUser"
+import {getClassByUser} from '../../../../lib/getClass' 
 export default async function ClassPage() {
     const authUser = await AuthUser()
     const classes = await getClassByUser(authUser.id)

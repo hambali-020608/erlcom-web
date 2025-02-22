@@ -1,7 +1,7 @@
-import Breadcrumb from "../../../components/dashboard/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../../components/dashboard/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import Link from "next/link";
-import AuthUser from '../../../lib/authUser'
+import AuthUser from '../../../../lib/authUser'
 
 
 const Profile =async () => {

@@ -29,6 +29,7 @@ if(data.password !== user.password){
 const token = jwt.sign({
     id:user.id,
     name: user.name,
+    role: user.role,
     email:user.email,
     
 },JWT_SECRET,{expiresIn:'1h'})

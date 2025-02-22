@@ -63,7 +63,7 @@ const ChatCard = ({chats}:any) => {
       <div>
         {chats.map((chat:any, key:any) => (
           <Link
-            href="/"
+            href={`/dashboard/chats/${chat.users_chats_sender_idTousers.id}`}
             className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
             key={key}
           >

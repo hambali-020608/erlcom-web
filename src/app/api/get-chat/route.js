@@ -15,12 +15,12 @@ export async function GET() {
       },
       include:{
         users_chats_sender_idTousers:true
-      }
+      },
       // include: {
       //   sender: { select: { name: true } },
       //   receiver: { select: { name: true } }
       // },
-    //   orderBy: { created_at: 'asc' }
+      orderBy: { created_at: 'desc' }
     }); 
 
 

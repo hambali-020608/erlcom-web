@@ -2,7 +2,11 @@
 import prisma from "./prisma"
 
 export async function getMateri () {
-    const programs = await prisma.courses.findMany()
+    const programs = await prisma.assignments.findMany({
+        include:{
+            courses:true
+        }
+    })
     return programs
 }
 export async function getMateriByUser (user_id) {

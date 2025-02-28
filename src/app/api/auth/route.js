@@ -15,7 +15,6 @@ const user = await prisma.users.findUnique(
     }
 )
 
-
 if(!user){
     return NextResponse.json({message:'user not found'})
 
@@ -23,9 +22,7 @@ if(!user){
 
 if(data.password !== user.password){
     return NextResponse.json({message:'password salah'})
-
 }
-
 const token = jwt.sign({
     id:user.id,
     name: user.name,
@@ -42,9 +39,6 @@ cookieStore.set({
     maxAge: 60 * 60
     
 })
-
-
-
 
 return NextResponse.json({message:'login berhasil',token,status:200})
 }

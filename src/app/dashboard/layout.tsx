@@ -36,7 +36,7 @@ export default function DashboardLayout({ user, admin }: DashboardLayoutProps) {
   }
 
   return (
-    <DefaultLayout>
+    <DefaultLayout role={role}>
       
       {role === "student" && user}
       {role === "instructor" && admin}
